@@ -1,0 +1,15 @@
+% 合并自原第6章：稳健性检验（作为第5章的末节组）
+\section{加入资产规模控制}
+为验证基准结果对控制变量选择的敏感性，本节在基准模型基础上额外加入资产规模控制（log(Assets)）。为便于复核，现将代表性表格直接置于本节：\input{final_tex/did_robustness_assets_table.tex}。结果显示交互项系数在不同设定下均保持负向且显著，幅度与基准接近。
+
+\section{缩尾处理敏感性}
+\label{sec:robustness_winsorize_in_ch5}
+极端值可能影响推断精度。本节系统比较无缩尾、1\%与5\%缩尾三种口径，模型设定与基准一致：\input{final_tex/did_robustness_winsorize_table.tex}。三种设定下系数差异极小且显著性稳定，表明结论不受极端值驱动。
+
+\section{安慰剂检验}
+\label{sec:robustness_placebo_in_ch5}
+开展虚假政策时点与虚假处理组两类安慰剂：\input{final_tex/did_robustness_placebo_table.tex}。交互项围绕零分布且不显著，支持识别的非偶然性。
+
+\section{样本窗口与剔除期}
+\label{sec:robustness_window_in_ch5}
+通过变动样本窗口与剔除极端年份，验证结论稳健性：\input{final_tex/did_robustness_window_table.tex}。DID交互项符号与幅度与基准保持一致。

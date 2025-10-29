@@ -1,9 +1,18 @@
-\chapter{数据与方法}
+\chapter{实证设计}
 \label{chapter:data_method}
 
 本章系统说明研究所使用的数据、样本构建流程、变量定义、计量模型以及主要的预检与诊断设定，确保与后续实证分析保持一致。研究样本覆盖 2010--2018 年的月度行业配对面板。
 
-\section{样本与数据}
+\section{主要因果识别模型构建}
+\label{sec:design_model}
+本文在行业配对层估计多期DID模型，设置配对固定效应与时间固定效应，标准误在配对层聚类：
+\begin{equation}
+\label{eq:did_baseline_ch4}
+II_{ijt} = \beta_0 + \beta_1 (Affected_i \times Post_t) + \bm{X}_{it}'\bm{\gamma}_1 + \bm{X}_{jt}'\bm{\gamma}_2 + \alpha_{ij} + \lambda_t + \varepsilon_{ijt},
+\end{equation}
+其中 $II_{ijt}$ 为 $i\to j$ 在期 $t$ 的方向性强度；$Affected_i$ 标记发送行业是否属于处理组；$Post_t$ 标记政策后；$\bm{X}_{it},\bm{X}_{jt}$ 为对称纳入的财务控制变量。事件研究用于检验平行趋势与动态路径，基期取政策前年（$k=-1$）。
+
+\section{数据来源与处理}
 \label{sec:data_source}
 
 \subsection{研究对象与时间范围}
@@ -42,7 +51,7 @@
     \item 在行业层面构造 40\(\times\)40 个有向配对，保留自环；最终得到 1,599 个行业配对。结合 108 个月度观察，共计 148{,}050 条观测用于后续分析。
 \end{itemize}
 
-\section{变量与模型}
+\section{主要变量说明}
 \label{sec:variable_definition}
 
 \subsection{因变量：行业风险溢出强度}
