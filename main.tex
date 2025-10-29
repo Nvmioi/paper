@@ -1,0 +1,48 @@
+% ============================================================================
+% Overleaf 主文件（GB/T 7714-2015 数字顺序制）
+% 编译：XeLaTeX -> BibTeX -> XeLaTeX -> XeLaTeX
+% ============================================================================
+\documentclass[12pt,a4paper,oneside]{ctexbook}
+\usepackage{geometry}
+\geometry{left=3cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+\usepackage{graphicx}
+\usepackage{booktabs,threeparttable}
+\usepackage{amsmath,amssymb}
+\usepackage{bm}
+\usepackage{natbib}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=black,citecolor=blue,urlcolor=blue}
+
+% 术语宏
+\newcommand{\II}{\textit{II}}
+
+% 参考文献样式（GB/T 7714-2015）
+% 可选：gbt7714-numerical 或 gbt7714-author-year
+\bibliographystyle{gbt7714-numerical}
+
+\begin{document}
+\setcounter{tocdepth}{2}
+\tableofcontents
+\listoffigures
+\listoftables
+\input{final_tex/abbreviations.tex}
+
+% 章节（从 子目录“final_tex/” 引入）
+% 注意：为避免 Overleaf 在子目录写 .aux 的权限/编码问题，这里改用 \input
+\input{final_tex/frontmatter.tex}
+\input{final_tex/chapter1.tex}
+\input{final_tex/chapter2.tex}
+\input{final_tex/chapter3.tex}
+\input{final_tex/chapter4.tex}
+\input{final_tex/chapter5.tex}
+\input{final_tex/chapter6.tex}
+\input{final_tex/chapter7.tex}
+
+% 附录（完整行业网络指标表）
+\appendix
+\input{final_tex/appendixA.tex}
+
+% 参考文献（指向 子目录“final_tex/references.bib”）
+\bibliography{final_tex/references}
+
+\end{document}

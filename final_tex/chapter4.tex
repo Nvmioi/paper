@@ -1,0 +1,172 @@
+\chapter{数据与方法}
+\label{chapter:data_method}
+
+本章系统说明研究所使用的数据、样本构建流程、变量定义、计量模型以及主要的预检与诊断设定，确保与后续实证分析保持一致。研究样本覆盖 2010--2018 年的月度行业配对面板。
+
+\section{样本与数据}
+\label{sec:data_source}
+
+\subsection{研究对象与时间范围}
+\begin{enumerate}
+    \item 样本覆盖 2010 年 1 月至 2018 年 12 月，共 108 个连续月度。为保证口径一致与样本完整性，对早期不完整月份进行剔除，形成 40 个行业的平衡覆盖。
+    \item 研究对象为 40 个行业之间的有向风险溢出关系。所有网络分析与 DID 回归均基于该行业层数据展开。
+\end{enumerate}
+
+\subsection{原始数据来源与授权}
+\begin{itemize}
+    \item 行业收益率与财务控制变量来自 CSMAR（国泰安）数据库的上市公司月度财务与市场数据子库，数据获取遵循数据库授权协议。公司层提取的核心字段包括月度收益率、资产负债表与利润表指标，并结合证券代码与行业分类信息进行归集。
+    \item 政策信息源于国务院及相关部委发布的去产能政策文件（详见第~\ref{sec:policy_timeline} 节）。
+\end{itemize}
+
+\subsection{行业分类与映射}
+\begin{itemize}
+    \item 公司层数据按照《国家投入产出表（2015）》所采用的行业划分进行聚合，该表基于 GB/T~4754-2011《国民经济行业分类》对基础行业进行合并。
+    \item 为与产业链研究保持一致，行业映射参照杨子晖等研究中的做法：先按照上市公司主营业务及证监会行业分类匹配至投入产出行业，再进行一致性校正。最终选取 40 个行业类别，与第~\ref{chap:empirical} 章网络分析节点集合一致。
+\end{itemize}
+
+\subsection{政策时间与处理组确定}
+\label{sec:policy_timeline}
+\begin{itemize}
+    \item 政策时间轴涵盖 2013--2019 年的关键节点：2013 年 10 月《国务院关于化解产能严重过剩矛盾的指导意见》（国发〔2013〕41 号）要求自 2014 年起实施差异化电价并压减过剩产能；2014--2015 年工信部发布《钢铁行业规范条件》《促进企业兼并重组意见》等配套文件，并设立专项贷款与财政奖补；2016 年国发〔2016〕6 号、国发〔2016〕7 号分别明确钢铁、煤炭压减目标；2017 年签署年度目标责任书；2018 年发改委出台《去产能成效评估办法》；2019 年国办文件要求完成“十三五”压减任务。以上节点与国务院及相关部委文件的公开节奏一致。
+    \item 基于上述时间轴，政策虚拟变量 \(Post_t\) 自 2014 年 1 月起取值 1，之前为 0。
+    \item 处理组行业参照国家重点去产能领域：钢铁、电解铝与造船在投入产出映射后合并为“金属冶炼和压延加工品”，煤炭采选维持单独分类；水泥、玻璃等建材行业映射为“非金属矿物制品”；高能耗装备制造归入“交通运输设备”。上述四类行业设置为处理组，其余 36 个行业作为对照组。
+\end{itemize}
+
+\subsection{数据清洗与过滤}
+为保证估计的稳健性与可比性，采用一致的清洗与构造流程：首先，剔除缺失日期或收益率的观测，对股票收益矩阵执行有效观测比例筛查，并对连续变量实施 5\%--95\% 的缩尾处理以降低极端值影响。其次，在公司层开展有向预测关系的统计检验（最大滞后 3 期、显著性阈值 5\%），以显著性占比衡量行业配对的当期方向性强度，并据此构造配对层指标 \(II_{i\to j,t}\)。最后，将该指标与行业层财务控制变量进行时间—行业对齐，形成覆盖全样本期的行业配对面板，用于后续的双重差分与事件研究估计；在稳健性检验中，报告不同缩尾比例与滞后设定下的结果对照。
+\subsection{处理组与对照组样本}
+\begin{itemize}
+    \item 处理行业：煤炭采选产品、金属冶炼和压延加工品、交通运输设备、非金属矿物制品。
+    \item 对照行业：其余 36 个未直接纳入政策重点去产能范围的行业。
+    \item 构造虚拟变量 \(Affected_i\) 标记发送行业是否属于处理组；\(Post_t\) 标记是否处于 2014 年及之后；核心交互项 \(Affected_i \times Post_t\) 捕捉政策实施后的差异化影响。
+    \item 在行业层面构造 40\(\times\)40 个有向配对，保留自环；最终得到 1,599 个行业配对。结合 108 个月度观察，共计 148{,}050 条观测用于后续分析。
+\end{itemize}
+
+\section{变量与模型}
+\label{sec:variable_definition}
+
+\subsection{因变量：行业风险溢出强度}
+\begin{itemize}
+    \item 核心因变量 \(II_{ijt}\) 基于公司层收益数据与行业映射构造：在公司层开展有向预测关系的统计检验，并据此按行业聚合到配对层，得到期 \(t\) 的方向性强度指标。
+    \item 在清洗后的矩阵上并行执行格兰杰因果检验（最大滞后 3、显著性阈值 5\%），以显著股票对占所有可能配对的比例衡量行业配对的溢出强度，这一归一化思路与系统性风险文献一致\citep{billio2012econometric,diebold2012better,diebold2014connectedness}：
+    \begin{equation}
+        II_{i\rightarrow j,t} = \frac{\text{显著格兰杰对数}}{N_i \times N_j}.
+    \end{equation}
+    \item 合并控制变量后得到覆盖 40 个行业、1,599 个行业配对与 108 个月度的面板数据，\(II_{ijt}\) 的实际取值范围约为 0.01--0.375，满足归一化假设并保留月度动态。
+
+\end{itemize}
+
+\subsection{核心解释变量}
+\begin{itemize}
+    \item \textbf{处理组虚拟变量 \(Affected_i\)}：发送行业属于处理组时取 1，否则为 0。
+    \item \textbf{政策虚拟变量 \(Post_t\)}：2014 年 1 月及以后取 1，其余取 0。
+    \item \textbf{双重差分交互项 \(Affected_i \times Post_t\)}：捕捉政策对处理组的差异化影响，是基准 DID 模型关注的核心系数。
+\end{itemize}
+
+\subsection{控制变量}
+\begin{itemize}
+    \item 财务控制变量通过市值加权与中位数聚合得到：$Leverage_{it}$、$ROA_{it}$、$TobinQ_{it}$、$AssetTurnover_{it}$ 等。
+    \item 连续变量统一在 5\%--95\% 分位进行分位数缩尾处理，降低极端值对估计与推断的影响；该口径在全文内保持一致，并在稳健性部分予以对照。
+    \item 本文控制变量包括资产负债率（Leverage）、总资产净利率（ROA）、托宾Q（TobinQ）、总资产周转率（AssetTurnover）等，i侧/j侧对称纳入。
+    \item 下文表~\ref{tab:variables_4_1} 列示主要变量的符号、定义与处理口径。
+\end{itemize}
+
+% -----------------------------------------------
+% 表4-1 变量定义与符号
+% -----------------------------------------------
+\begin{table}[htbp]
+\centering
+\caption{主要变量定义与符号（Table 4-1）}
+\label{tab:variables_4_1}
+\begin{threeparttable}
+\small
+\begin{tabular}{lp{10.5cm}}
+\toprule
+\textbf{符号} & \textbf{定义与处理口径} \\
+\midrule
+$II_{ijt}$ & 行业 $i$ 对行业 $j$ 在期 $t$ 的风险溢出强度；由公司层格兰杰显著性配对汇总并在5--95\%分位缩尾（Winsor）。\\
+$Affected_i$ & 处理组虚拟变量：发送行业 $i$ 属处理组（煤炭、金属冶炼和压延加工品、交通运输设备、非金属矿物制品）取1，否则0。\\
+$Post_t$ & 政策后虚拟变量：2014年1月及以后取1，否则0。\\
+$DID_{ijt}$ & 双重差分交互项：$Affected_i\times Post_t$。\\
+$Leverage_{it/jt}$ & 资产负债率；行业层按中位数（i侧/j侧对称）。\\
+$ROA_{it/jt}$ & 总资产净利率；行业层按中位数（i侧/j侧对称）。\\
+$TobinQ_{it/jt}$ & 托宾Q值；行业层按中位数（i侧/j侧对称）。\\
+$AssetTurnover_{it/jt}$ & 总资产周转率；行业层按中位数（i侧/j侧对称）。\\
+$Z^{pre}_{ij}$ & 对处理邻居的政策前预暴露（exposure）：在政策前窗口对与处理组的耦合强度聚合（如 $\max\{\text{exp}(i),\text{exp}(j)\}$ 或均值），仅用于异质性分组与描述。\\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\footnotesize
+\item 注：连续变量统一进行5--95\%分位缩尾；规模/收益率类采用市值加权，其余比率按中位数；预暴露为结构性剂量，不作为工具变量使用，阈值与聚合口径在稳健性中扫描。
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+% -----------------------------------------------
+% 表4-2 变量摘要统计（2010–2018）
+% -----------------------------------------------
+\begin{table}[htbp]
+\centering
+\caption{主要变量摘要统计（Table 4-2，2010–2018）}
+\label{tab:variables_4_2}
+\begin{threeparttable}
+\small
+\begin{tabular}{lrrrrr}
+\toprule
+变量 & N & 均值 & 标准差 & 最小值 & 最大值 \\
+\midrule
+$II_{ijt}$ &  &  &  &  &  \\
+$Affected_i$ &  &  &  & 0 & 1 \\
+$Post_t$ &  &  &  & 0 & 1 \\
+$Leverage_{it}$ &  &  &  &  &  \\
+$ROA_{it}$ &  &  &  &  &  \\
+$TobinQ_{it}$ &  &  &  &  &  \\
+$AssetTurnover_{it}$ &  &  &  &  &  \\
+$Leverage_{jt}$ &  &  &  &  &  \\
+$ROA_{jt}$ &  &  &  &  &  \\
+$TobinQ_{jt}$ &  &  &  &  &  \\
+$AssetTurnover_{jt}$ &  &  &  &  &  \\
+$Z^{pre}_{ij}$ &  &  &  &  &  \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\footnotesize
+\item 注：统计口径与表~\ref{tab:variables_4_1} 一致。连续变量在 5--95\% 分位缩尾；规模/收益率按市值加权，比率按中位数聚合；$Z^{pre}_{ij}$ 在政策前窗口（2010–2013）计算并用于异质性分组。摘要统计结果将在正式跑数后统一报出。
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+\subsection{计量模型与识别策略}
+\label{sec:model_identification}
+
+\subsection{基准双重差分模型}
+\begin{equation}
+    II_{ijt} = \alpha + \beta (Affected_i \times Post_t) + \gamma X_{ijt} + \mu_{ij} + \lambda_t + \varepsilon_{ijt},
+    \label{eq:baseline_did}
+\end{equation}
+其中 \(X_{ijt}\) 包含行业层财务控制变量等控制项；\(\mu_{ij}\) 为行业配对固定效应，\(\lambda_t\) 为时间固定效应，标准误在行业配对层聚类，整体框架与项目评估文献一致\citep{imbens2009recent}。
+
+\subsection{识别假设与扩展}
+\begin{itemize}
+    \item \textbf{平行趋势假设}：政策实施前处理组与对照组的风险溢出趋势相近。第~\ref{chap:empirical} 章通过事件研究检验该假设，政策前各期系数不显著。
+    \item \textbf{无共时政策干扰}：研究期间未出现同样影响处理组的系统性冲击；相关政策梳理已在第~\ref{sec:policy_timeline} 节说明。
+    \item \textbf{样本平衡}：处理组与对照组在政策前的关键特征相似，描述性统计与均值差异检验见第~\ref{chap:empirical} 章表格。
+    \item \textbf{事件研究拓展}：为了检验平行趋势与政策效应动态，构建事件研究模型
+    \begin{equation}
+        II_{ijt} = \alpha + \sum_{k \neq -1} \delta_k D_k + \gamma X_{ijt} + \mu_{ij} + \lambda_t + \varepsilon_{ijt},
+        \label{eq:event_study}
+    \end{equation}
+    其中 \(D_k\) 为相对年份虚拟变量，基准期为政策前一月（\(k=-1\)）。
+\end{itemize}
+
+\subsection{预检与诊断}
+\label{sec:diagnostics}
+
+\begin{itemize}
+    \item \textbf{平行趋势检验}：事件研究图显示政策前系数不显著，支撑平行趋势假设；政策实施当年效应不明显，说明政策传导存在滞后。
+    \item \textbf{样本平衡与检验}：政策前实施均衡性检验（两样本均值差与图形对比），在稳健性中变动窗口/样本以验证结论的普适性（详见第~\ref{chapter:robustness} 章）。
+    \item \textbf{共线性与极端值处理}：控制变量相关系数低于阈值（计划于附录展示相关矩阵）；缩尾处理显著降低大值对标准误的影响。
+    \item \textbf{稳健性预设}：明确将在后续章节检验控制变量扩展、不同缩尾级别、虚假政策等稳健性，以增强识别可信度。
+\end{itemize}
+
+为保证可复核性，附录提供脚本与命令清单（见《附录：可复核脚本与命令清单》）。变量摘要统计（表~\ref{tab:variables_4_2}）由脚本自动生成，建议在最终稿前一轮统一跑数并锁定随机种子。

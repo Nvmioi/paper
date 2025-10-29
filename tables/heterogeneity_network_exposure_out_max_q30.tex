@@ -1,0 +1,17 @@
+\begin{table}[htbp]
+\centering
+\caption{网络预暴露（out,max,q=0.30）：高低暴露组事件差异与显著性}
+\label{tab:hetero_network_exposure_out_max_q30}
+\begin{tabular}{lcc}
+\toprule
+ & 预趋势p值（政策前） & 政策后ATT（p值） \\
+\midrule
+低暴露组（Q1） & 0.504 & $-0.00412$ ($3.62\times 10^{-6}$) \\
+高暴露组（Q4） & 0.804 & $-0.00579$ ($1.07\times 10^{-5}$) \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\small
+\item 注：基于 \texttt{merge\_lag3} 的年度化事件对比，基准年 -1 归一；与主回归控制一致，配对FE+年度效应，标准误在配对层聚类。
+\end{tablenotes}
+\end{table}

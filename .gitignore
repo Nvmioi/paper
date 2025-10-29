@@ -1,0 +1,48 @@
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.brf
+*.dvi
+*.fdb_latexmk
+*.fls
+*.idx
+*.ilg
+*.ind
+*.log
+*.lof
+*.lot
+*.nav
+*.out
+*.snm
+*.synctex.gz
+*.toc
+*.vrb
+*.xdv
+
+# minted and listings
+_minted*
+*.lol
+
+# OS/filesystem cruft
+.DS_Store
+Thumbs.db
+
+# Editors/IDEs
+.vscode/
+.idea/
+*.code-workspace
+
+# Archives and temporary exports
+*.zip
+*.tmp
+
+# Python/R caches (if any helpers exist)
+__pycache__/
+*.pyc
+.Rhistory
+.Rproj.user/
+
+# Node/JS (just in case)
+node_modules/

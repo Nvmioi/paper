@@ -1,0 +1,25 @@
+\begin{table}[htbp]
+\centering
+\begin{threeparttable}
+\caption{稳健性检验：加入资产规模控制}
+\label{tab:robustness_assets}
+\begin{tabular}{lccc}
+\hline\hline
+ & (1) & (2) & (3) \\
+ & 无缩尾 & 1\%缩尾 & 5\%缩尾 \\
+\hline
+Affected $\times$ Post & -0.001604*** & -0.001559*** & -0.001514*** \\
+ & (0.000460) & (0.000439) & (0.000410) \\
+\hline
+R² & 0.0054 & 0.0057 & 0.0059 \\
+观测值 & 148,050 & 148,050 & 148,050 \\
+\hline\hline
+\end{tabular}
+\begin{tablenotes}
+\small
+\item 注：***、**、* 分别表示在1\%、5\%、10\%水平上显著。
+\item 括号内为在行业配对层面聚类的稳健标准误。
+\item 所有列均包含双向固定效应（行业配对FE + 时间FE）。
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
