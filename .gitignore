@@ -46,3 +46,6 @@ __pycache__/
 
 # Node/JS (just in case)
 node_modules/
+
+# Project artifacts
+*.pdf
